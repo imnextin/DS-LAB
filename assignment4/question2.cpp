@@ -1,28 +1,37 @@
 #include <iostream>
 using namespace std;
 #define MAX 100
-int q[MAX],front=-1,rear=-1;
+int cq[MAX],front=-1,rear=-1;
 bool isEmpty(){ return front==-1; }
-bool isFull(){ return rear==MAX-1; }
+bool isFull(){ return (rear+1)%MAX==front; }
 void enqueue(int x){
     if(isFull()) cout<<"Queue Overflow\n";
     else{
         if(front==-1) front=0;
-        q[++rear]=x;
+        rear=(rear+1)%MAX;
+        cq[rear]=x;
     }
 }
 void dequeue(){
     if(isEmpty()) cout<<"Queue Underflow\n";
     else{
-        cout<<"Dequeued "<<q[front]<<"\n";
+        cout<<"Dequeued "<<cq[front]<<"\n";
         if(front==rear) front=rear=-1;
-        else front++;
+        else front=(front+1)%MAX;
     }
 }
-void peek(){ if(isEmpty()) cout<<"Empty\n"; else cout<<q[front]<<"\n"; }
+void peek(){ if(isEmpty()) cout<<"Empty\n"; else cout<<cq[front]<<"\n"; }
 void display(){
     if(isEmpty()) cout<<"Empty\n";
-    else{ for(int i=front;i<=rear;i++) cout<<q[i]<<" "; cout<<"\n"; }
+    else{
+        int i=front;
+        while(true){
+            cout<<cq[i]<<" ";
+            if(i==rear) break;
+            i=(i+1)%MAX;
+        }
+        cout<<"\n";
+    }
 }
 int main(){
     int ch,x;
